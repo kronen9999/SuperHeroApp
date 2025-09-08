@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:superhero_app/data/repository.dart';
+import 'package:superhero_app/models/superheroresponse.dart';
 
 class Searchscreen extends StatefulWidget {
   const Searchscreen({super.key});
@@ -8,6 +10,9 @@ class Searchscreen extends StatefulWidget {
 }
 
 class _SearchscreenState extends State<Searchscreen> {
+  Future<Superheroresponse?>? _superheroresponse;
+  Repository repository = Repository();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +23,9 @@ class _SearchscreenState extends State<Searchscreen> {
             padding: const EdgeInsets.all(8),
             child: TextField(
               onChanged: (value) {
-                print(value.toString().toLowerCase());
+                setState(() {
+                  _superheroresponse = repository.fetchSuperhero(value);
+                });
               },
               decoration: InputDecoration(
                 hintText: "Ingresa un nombre",
@@ -26,6 +33,21 @@ class _SearchscreenState extends State<Searchscreen> {
                 prefixIcon: Icon(Icons.search),
               ),
             ),
+          ),
+          FutureBuilder(
+            future: _superheroresponse,
+            builder: (context, snaptshot) {
+              if (snaptshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snaptshot.hasError) {
+                return Text('Error: ${snaptshot.error}');
+              } else if (snaptshot.hasData) {
+                final data = snaptshot.data;
+                return Text('Response: ${data?.response}');
+              } else {
+                return Text('No data');
+              }
+            },
           ),
         ],
       ),
