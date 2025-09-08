@@ -10,6 +10,25 @@ class Searchscreen extends StatefulWidget {
 class _SearchscreenState extends State<Searchscreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Super Hero Search")));
+    return Scaffold(
+      appBar: AppBar(title: Text("Super Hero Search")),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: TextField(
+              onChanged: (value) {
+                print(value.toString().toLowerCase());
+              },
+              decoration: InputDecoration(
+                hintText: "Ingresa un nombre",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
