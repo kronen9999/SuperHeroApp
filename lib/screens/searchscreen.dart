@@ -12,6 +12,7 @@ class Searchscreen extends StatefulWidget {
 class _SearchscreenState extends State<Searchscreen> {
   Future<Superheroresponse?>? _superheroresponse;
   Repository repository = Repository();
+  bool _textEmpty = true;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,11 @@ class _SearchscreenState extends State<Searchscreen> {
             child: TextField(
               onChanged: (value) {
                 setState(() {
+                  if (value.isEmpty) {
+                    _textEmpty = true;
+                  } else {
+                    _textEmpty = false;
+                  }
                   _superheroresponse = repository.fetchSuperhero(value);
                 });
               },
@@ -34,17 +40,19 @@ class _SearchscreenState extends State<Searchscreen> {
               ),
             ),
           ),
-          bodyList(),
+          bodyList(_textEmpty),
         ],
       ),
     );
   }
 
-  FutureBuilder<Superheroresponse?> bodyList() {
+  FutureBuilder<Superheroresponse?> bodyList(bool textEmpty) {
     return FutureBuilder(
       future: _superheroresponse,
       builder: (context, snaptshot) {
-        if (snaptshot.connectionState == ConnectionState.waiting) {
+        if (textEmpty) {
+          return Text('Please enter a name to search');
+        } else if (snaptshot.connectionState == ConnectionState.waiting) {
           return CircularProgressIndicator();
         } else if (snaptshot.hasError) {
           return Text('Error: ${snaptshot.error}');
@@ -55,11 +63,42 @@ class _SearchscreenState extends State<Searchscreen> {
               itemCount: resultado?.length ?? 0,
               itemBuilder: (context, index) {
                 if (resultado != null) {
-                  return Column(
-                    children: [
-                      Text(resultado[index].name),
-                      Image.network("${resultado[index].url}"),
-                    ],
+                  return Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 16.0,
+                      bottom: 16.0,
+                    ),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.red,
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              resultado[index].name,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 28,
+                              ),
+                            ),
+                          ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              "${resultado[index].url}",
+                              height: 250,
+                              width: double.infinity,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   );
                 } else {
                   return Text('No results');
