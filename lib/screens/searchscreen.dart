@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:superhero_app/data/repository.dart';
 import 'package:superhero_app/models/superheroresponse.dart';
+import 'package:superhero_app/screens/heroinfo.dart';
 
 class Searchscreen extends StatefulWidget {
   const Searchscreen({super.key});
@@ -69,34 +70,40 @@ class _SearchscreenState extends State<Searchscreen> {
                       right: 16.0,
                       bottom: 16.0,
                     ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.red,
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Heroinfo()),
                       ),
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              resultado[index].name,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 28,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.red,
+                        ),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                resultado[index].name,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 28,
+                                ),
                               ),
                             ),
-                          ),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              "${resultado[index].url}",
-                              height: 250,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Image.network(
+                                "${resultado[index].url}",
+                                height: 250,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );

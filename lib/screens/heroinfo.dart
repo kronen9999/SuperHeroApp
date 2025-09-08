@@ -5,6 +5,9 @@ class Heroinfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: Text("Info hero")),
+      body: Center(child: Text('Hero Info Screen')),
+    );
   }
 }
