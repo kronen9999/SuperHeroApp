@@ -55,7 +55,12 @@ class _SearchscreenState extends State<Searchscreen> {
               itemCount: resultado?.length ?? 0,
               itemBuilder: (context, index) {
                 if (resultado != null) {
-                  return Text(resultado[index].name);
+                  return Column(
+                    children: [
+                      Text(resultado[index].name),
+                      Image.network("${resultado[index].url}"),
+                    ],
+                  );
                 } else {
                   return Text('No results');
                 }
