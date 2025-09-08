@@ -34,23 +34,38 @@ class _SearchscreenState extends State<Searchscreen> {
               ),
             ),
           ),
-          FutureBuilder(
-            future: _superheroresponse,
-            builder: (context, snaptshot) {
-              if (snaptshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snaptshot.hasError) {
-                return Text('Error: ${snaptshot.error}');
-              } else if (snaptshot.hasData) {
-                final data = snaptshot.data;
-                return Text('Response: ${data?.response}');
-              } else {
-                return Text('No data');
-              }
-            },
-          ),
+          bodyList(),
         ],
       ),
+    );
+  }
+
+  FutureBuilder<Superheroresponse?> bodyList() {
+    return FutureBuilder(
+      future: _superheroresponse,
+      builder: (context, snaptshot) {
+        if (snaptshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snaptshot.hasError) {
+          return Text('Error: ${snaptshot.error}');
+        } else if (snaptshot.hasData) {
+          var resultado = snaptshot.data?.results;
+          return Expanded(
+            child: ListView.builder(
+              itemCount: resultado?.length ?? 0,
+              itemBuilder: (context, index) {
+                if (resultado != null) {
+                  return Text(resultado[index].name);
+                } else {
+                  return Text('No results');
+                }
+              },
+            ),
+          );
+        } else {
+          return Text('No data');
+        }
+      },
     );
   }
 }
