@@ -10,6 +10,6 @@ class Searchscreen extends StatefulWidget {
 class _SearchscreenState extends State<Searchscreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(appBar: AppBar(title: Text("Super Hero Search")));
   }
 }
