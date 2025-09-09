@@ -73,7 +73,10 @@ class _SearchscreenState extends State<Searchscreen> {
                     child: GestureDetector(
                       onTap: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Heroinfo()),
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Heroinfo(infoResponse: resultado[index]),
+                        ),
                       ),
                       child: Container(
                         decoration: BoxDecoration(
